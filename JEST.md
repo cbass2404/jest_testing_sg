@@ -354,3 +354,87 @@ test('it returns all items with matching ItemName', () => {
 ```
 
 _The primary purpose of snapshots is to avoid manually inputting data for tests_
+
+# Stephen Grider Course
+
+# What do we test?
+
+-   Look at each individual part of your application
+-   Imagine telling a friend 'here is what this piece of code does'
+-   Write a test to verify each part does what you expect
+
+## Testing design
+
+-   Ask, what do we care about?
+
+_Example_
+App Component
+
+-   shows the comment box inside of it
+-   shows the comment list inside of it
+
+CommentBox Component
+
+-   shows a text area and a button
+-   users can enter input into the text area and submit it
+
+CommentList Component
+
+-   shows one 'li' element per comment
+-   text from each comment is visible
+
+Comments Reducer
+
+-   Properly hands actions with a type of 'SAVE_COMMENT'
+-   Does not throw an error if it gets an action with any other type
+
+SaveComment Action
+
+-   Has a type of 'SAVE_COMMENT'
+-   Produces an action that has a payload of the new comments text
+
+## Setting up tests in React
+
+-   Use the 'it' (an alias of test) global function that takes two arguments
+    -   string, description of the test
+        -   when making a name imagine the sentence blending with the 'it' function "'it' shows a comment box"
+    -   function to run the test logic
+
+```json
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+```
+
+-   jest-dom simulates a browser to trick react into thinking it is working in a browser
+
+```javascript
+it('shows a comment box', () => {
+    // create simulated DOM element for react
+    const div = document.createElement('div');
+
+    // creates App component in the fake DOM element
+    ReactDOM.render(<App />, div);
+
+    // Look inside the simulated div
+    // checks to see if the CommentBox is in there
+    expect(div.innerHTML).toContain('Comment Box');
+
+    // unmounts the fake DOM element to prevent sluggishness in test suite
+    ReactDOM.unmountComponentAtNode(div);
+});
+```
+
+_not the best way to test_
+
+-   expect
+    -   global function to say to expect the following code
+-   (value that we are inspecting)
+-   matcher statement
+    -   designates how we want to inspect the value
+-   (value that we expect to see)
+
+```javascript
+
+```

@@ -515,3 +515,56 @@ it('shows a comment list', () => {
     expect(wrapped.find(CommentList).length).toEqual(1);
 });
 ```
+
+## full dom
+
+_the following example is better to do as a shallow render, but is done as full dom just for learning purposes_
+
+```javascript
+import { mount } from 'enzyme';
+
+import CommentBox from 'components/CommentBox';
+
+let wrapped;
+
+beforeEach(() => {
+    wrapped = mount(<CommentBox />);
+});
+
+afterEach(() => {
+    wrapped.unmount();
+});
+
+it('has a text area and a button', () => {
+    expect(wrapped.find('textarea').length).toEqual(1);
+    expect(wrapped.find('button').length).toEqual(1);
+});
+```
+
+-   when doing full dom renders be sure to clean up after every test so it does not cause issues with other tests
+
+## testing the ability to enter text to text area
+
+-   use .simulate from enzymes library to simulate a change event
+
+    -   as the first argument you must use the basic javascript name of the event, not react as in onChange is react and change is javascript
+    -   use mock to create an event object as the second argument to simulate
+
+-   use prop('propName') to get the values of prop keys on components and its children
+
+```javascript
+it('has a text area that users can type in', () => {
+    // find textarea element
+    // simulate a 'change' event
+    // provide a fake event object
+    wrapped.find('textarea').simulate('change', {
+        target: { value: 'new comment' },
+    });
+
+    // force the component to update
+    wrapped.update();
+
+    // assert that the textareas value has changed
+    expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
+});
+```

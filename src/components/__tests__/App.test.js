@@ -1,17 +1,15 @@
-import ReactDOM from 'react-dom';
+import { shallow } from 'enzyme';
 import App from '../App';
+import CommentBox from '../CommentBox';
 
 it('shows a comment box', () => {
-    // create simulated DOM element for react
-    const div = document.createElement('div');
+    // use shallow to render just the component and none of its REACT child components
+    // use wrapped to show that this component has additional functionality
+    const wrapped = shallow(<App />);
 
-    // creates App component in the fake DOM element
-    ReactDOM.render(<App />, div);
-
-    // Look inside the simulated div
-    // checks to see if the CommentBox is in there
-    expect(div.innerHTML).toContain('Comment Box');
-
-    // unmounts the fake DOM element to prevent sluggishness in test suite
-    ReactDOM.unmountComponentAtNode(div);
+    // check that App has CommentBox inside of it
+    // wrapped.find returns an array
+    // check that the length of the array only has one instance of the item
+    // if that is all that is supposed to be there
+    expect(wrapped.find(CommentBox).length).toEqual(1);
 });

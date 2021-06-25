@@ -36,8 +36,30 @@ When to use Jest?
 1. In your main directory input the following into your terminal:
 
 ```
-$ npm install --save-dev jest
+$ npm install --save-dev jest enzyme enzyme-adapter-react-17
 ```
+
+_the last number of adapter-react is the version of react you are running_
+
+-   create a setupTests.js file in src directory and put in the following to configure for enzyme:
+
+```javascript
+import Enzyme from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+
+Enzyme.configure({ adapter: new Adapter() });
+```
+
+[Enzyme Documentation](https://enzymejs.github.io/enzyme)
+
+-   enzyme works in three ways:
+    -   Static render
+        -   Render the given component and return plain html
+    -   Shallow render
+        -   Render _just_ the given component and none of its children
+    -   Full Dom
+        -   Render the component and all of its children
+        -   lets us modify it afterwards
 
 2. In your package.json file add the following to your scripts section:
 
@@ -426,7 +448,7 @@ it('shows a comment box', () => {
 });
 ```
 
-_not the best way to test_
+_not the best way to test, it is always better to not access the inner workings of child components_
 
 -   expect
     -   global function to say to expect the following code
@@ -436,5 +458,17 @@ _not the best way to test_
 -   (value that we expect to see)
 
 ```javascript
+it('shows a comment box', () => {
+    // use shallow to render just the component and none of its REACT child components
+    // use wrapped to show that this component has additional functionality
+    const wrapped = shallow(<App />);
 
+    // check that App has CommentBox inside of it
+    // wrapped.find returns an array
+    // check that the length of the array only has one instance of the item
+    // if that is all that is supposed to be there
+    expect(wrapped.find(CommentBox).length).toEqual(1);
+});
 ```
+
+_this is the right way to test that components exist inside another component. it is a good habit to make each test break to make sure it is working right_

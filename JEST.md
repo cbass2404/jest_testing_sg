@@ -61,6 +61,23 @@ Enzyme.configure({ adapter: new Adapter() });
         -   Render the component and all of its children
         -   lets us modify it afterwards
 
+## Handling absolute imports
+
+-   in main directory create a jsconfig.json file and put in the following:
+
+```json
+{
+    "compilerOptions": {
+        "baseUrl": "src"
+    },
+    "include": ["src"]
+}
+```
+
+_sets up absolute paths from src directory_
+
+[documentation](https://facebook.github.io/create-react-app/docs/importing-a-component#absolute-imports)
+
 2. In your package.json file add the following to your scripts section:
 
 ```json
@@ -472,3 +489,29 @@ it('shows a comment box', () => {
 ```
 
 _this is the right way to test that components exist inside another component. it is a good habit to make each test break to make sure it is working right_
+
+## beforeEach
+
+-   used to do common setup for different tests inside the same file
+
+```javascript
+import { shallow } from 'enzyme';
+
+import App from 'components/App';
+import CommentBox from 'components/CommentBox';
+import CommentList from 'components/CommentList';
+
+let wrapped;
+
+beforeEach(() => {
+    wrapped = shallow(<App />);
+});
+
+it('shows a comment box', () => {
+    expect(wrapped.find(CommentBox).length).toEqual(1);
+});
+
+it('shows a comment list', () => {
+    expect(wrapped.find(CommentList).length).toEqual(1);
+});
+```

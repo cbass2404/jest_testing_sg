@@ -38,6 +38,8 @@ it('text area emptied after submit', () => {
     });
     wrapped.update();
 
+    expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
+
     wrapped.find('form').simulate('submit');
     wrapped.update();
 

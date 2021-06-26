@@ -786,6 +786,19 @@ it('can fetch a list of comments and display them', (done) => {
         expect(wrapped.find('li').length).toEqual(2);
 
         done();
+        wrapped.unmount();
     }, 100);
+});
+```
+
+-   alternatively and more accurately you can use the moxios.wait() function to tell jest to wait on the step of the test to complete
+
+```javascript
+moxios.wait(() => {
+    wrapped.update();
+    expect(wrapped.find('li').length).toEqual(2);
+
+    done();
+    wrapped.unmount();
 });
 ```

@@ -679,3 +679,34 @@ it('handles action with unknown type', () => {
     expect(newState).toEqual([]);
 });
 ```
+
+## testing state
+
+-   to test state you need an initial state variable for your redux store this gives it some test data to work with
+-   other methods will get overwritten by the connect 'react-redux' function
+
+```javascript
+// root
+const Root = ({ children, initialState = {} }) => {
+    return <Provider store={store(initialState)}>{children}</Provider>;
+};
+
+// store
+export const store = (initialState) => createStore(reducers, initialState);
+
+// test
+it('creates one LI per comment', () => {
+    expect(wrapped.find('li').length).toEqual(lengthOfInitialStatePassed);
+});
+```
+
+-   when testing the actual html output of a dom element text() function should be looked at with skepticism
+    -   text will only return the text and not the html elements
+-   it is better to use the enzyme render() method and look at the cheerioWrapper
+
+```javascript
+it('shows the text for each comment', () => {
+    expect(wrapped.render().text()).toContain('Comment 1');
+    expect(wrapped.render().text()).toContain('Comment 2');
+});
+```

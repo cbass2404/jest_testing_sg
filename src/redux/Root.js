@@ -1,8 +1,8 @@
 import { Provider } from 'react-redux';
 import { store } from 'redux/store';
 
-const Root = ({ children }) => {
-    return <Provider store={store}>{children}</Provider>;
+const Root = ({ children, initialState = {} }) => {
+    return <Provider store={store(initialState)}>{children}</Provider>;
 };
 
 export default Root;

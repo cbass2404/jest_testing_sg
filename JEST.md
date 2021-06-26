@@ -710,3 +710,19 @@ it('shows the text for each comment', () => {
     expect(wrapped.render().text()).toContain('Comment 2');
 });
 ```
+
+## Api Testing
+
+Unit Testing vs Integration Testing
+
+-   Unit tests
+    -   tests one thing at a time
+    -   Examples:
+        -   does the commentbox show a button?
+        -   does the commentlist produce a list of 'LI' elements?
+        -   does the action creator return an object
+-   Integration tests
+    -   tests many things together
+    -   integration tests should not be in a shared folder with unit tests
+    -   Examples:
+        -   Does clicking 'Fetch Comments' show a list of 'LI's?

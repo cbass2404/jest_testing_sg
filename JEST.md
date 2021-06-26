@@ -726,3 +726,66 @@ Unit Testing vs Integration Testing
     -   integration tests should not be in a shared folder with unit tests
     -   Examples:
         -   Does clicking 'Fetch Comments' show a list of 'LI's?
+
+### Axios with Moxios in testing
+
+[Moxios Documentation](https://github.com/axios/moxios)
+
+-   JestDOM is a fake browser environment, requests will fail entirely when trying to reach outside resources
+
+-   To get around this issue moxios intercepts the axios request and mocks data to send back so it does not immediately fail
+
+```javascript
+beforeEach(() => {
+    moxios.install();
+    // first argument is the url
+    // second argument is the return object to mock
+    moxios.stubRequest('http://jsonplaceholder.typicode.com/comments', {
+        status: 200,
+        response: [{ name: 'Fetched #1' }, { name: 'Fetch #2' }],
+    });
+});
+
+afterEach(() => {
+    moxios.uninstall();
+});
+```
+
+-   due to a split second delay in moxios intercepting and pushing the data back tests can fail because everything is done automatically
+-   you can add a pause to compensate for the delay
+
+### Done
+
+-   because jest tries to run each line as fast as possible setTimeout can sometimes not work as intended
+-   to get around this, the test/it callback can take an argument of done to tell the test to pause for just a moment
+
+```javascript
+beforeEach(() => {
+    moxios.install();
+    moxios.stubRequest('http://jsonplaceholder.typicode.com/comments', {
+        status: 200,
+        response: [{ name: 'Fetched #1' }, { name: 'Fetch #2' }],
+    });
+});
+
+afterEach(() => {
+    moxios.uninstall();
+});
+
+it('can fetch a list of comments and display them', (done) => {
+    const wrapped = mount(
+        <Root>
+            <App />
+        </Root>
+    );
+
+    wrapped.find('.fetch-comments').simulate('click');
+
+    setTimeout(() => {
+        wrapped.update();
+        expect(wrapped.find('li').length).toEqual(2);
+
+        done();
+    }, 100);
+});
+```

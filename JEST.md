@@ -655,3 +655,27 @@ beforeEach(() => {
     );
 });
 ```
+
+## testing reducers
+
+-   it is straight forward, create an action object and pass it to the created reducer
+
+```javascript
+it('handles actions of type SAVE_COMMENT', () => {
+    const action = {
+        type: SAVE_COMMENT,
+        payload: 'New Comment',
+    };
+
+    const newState = commentsReducer([], action);
+
+    expect(newState).toEqual(['New Comment']);
+});
+
+it('handles action with unknown type', () => {
+    // to test default of reducer
+    const newState = commentsReducer([], { type: 'lakjsdflk' });
+
+    expect(newState).toEqual([]);
+});
+```

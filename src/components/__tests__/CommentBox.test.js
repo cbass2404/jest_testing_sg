@@ -1,11 +1,19 @@
 import { mount } from 'enzyme';
 
+// redux
+import Root from 'redux/Root';
+
+// components
 import CommentBox from 'components/CommentBox';
 
 let wrapped;
 
 beforeEach(() => {
-    wrapped = mount(<CommentBox />);
+    wrapped = mount(
+        <Root>
+            <CommentBox />
+        </Root>
+    );
 });
 
 afterEach(() => {

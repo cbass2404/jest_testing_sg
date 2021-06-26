@@ -627,3 +627,31 @@ describe('the text area', () => {
     });
 });
 ```
+
+## redux
+
+-   when using redux tests will fail if you only import the tested component into the test environment
+-   setup a reusable redux root component as below to let jest know it is a redux using component
+
+```javascript
+import { Provider } from 'react-redux';
+import { store } from 'redux/store';
+
+const Root = ({ children }) => {
+    return <Provider store={store}>{children}</Provider>;
+};
+
+export default Root;
+```
+
+-   then wrap the testing component with the root as below
+
+```javascript
+beforeEach(() => {
+    wrapped = mount(
+        <Root>
+            <CommentBox />
+        </Root>
+    );
+});
+```

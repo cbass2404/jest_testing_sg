@@ -527,10 +527,12 @@ import CommentBox from 'components/CommentBox';
 
 let wrapped;
 
+// does something before each function in the same file
 beforeEach(() => {
     wrapped = mount(<CommentBox />);
 });
 
+// does something after each function in the same file
 afterEach(() => {
     wrapped.unmount();
 });
@@ -566,5 +568,62 @@ it('has a text area that users can type in', () => {
 
     // assert that the textareas value has changed
     expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
+});
+```
+
+-   when doing multiple steps in a test it is good form to do assertion after each step to make sure it worked
+
+```javascript
+it('text area emptied after submit', () => {
+    wrapped.find('textarea').simulate('change', {
+        target: { value: 'new comment' },
+    });
+    wrapped.update();
+
+    expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
+
+    wrapped.find('form').simulate('submit');
+    wrapped.update();
+
+    expect(wrapped.find('textarea').prop('value')).toEqual('');
+});
+```
+
+## describe function call
+
+-   used to group tests together with common functionality
+
+-   first argument is a string that describes the purpose of all the tests that follow
+
+-   second is a function that contains all the tests
+    -   describe is a good way to limit the scope of a beforeEach and afterEach statement
+
+```javascript
+describe('the text area', () => {
+    beforeEach(() => {
+        // find textarea element
+        // simulate a 'change' event
+        // provide a fake event object
+        wrapped.find('textarea').simulate('change', {
+            target: { value: 'new comment' },
+        });
+
+        // force the component to update
+        wrapped.update();
+    });
+
+    it('has a text area that users can type in', () => {
+        // assert that the textareas value has changed
+        expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
+    });
+
+    it('text area emptied after submit', () => {
+        expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
+
+        wrapped.find('form').simulate('submit');
+        wrapped.update();
+
+        expect(wrapped.find('textarea').prop('value')).toEqual('');
+    });
 });
 ```

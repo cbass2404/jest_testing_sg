@@ -20,7 +20,7 @@ const requireAuth = (ChildComponent) => {
         }
 
         render() {
-            return <ChildComponent />;
+            return <ChildComponent {...this.props} />;
         }
     }
 

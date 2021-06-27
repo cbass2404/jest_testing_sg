@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // redux
 import { connect } from 'react-redux';
 import * as actions from 'redux/actions';
 
-const CommentBox = ({ saveComment, fetchComments }) => {
+const CommentBox = ({ saveComment, fetchComments, auth, history }) => {
     const [comment, setComment] = useState('');
 
     const handleSubmit = (e) => {
@@ -14,6 +14,17 @@ const CommentBox = ({ saveComment, fetchComments }) => {
 
         setComment('');
     };
+
+    const shouldNavigateAway = useCallback(() => {
+        if (!auth) {
+            history.push('/');
+        }
+    }, [auth, history]);
+
+    useEffect(() => {
+        shouldNavigateAway();
+    }, [shouldNavigateAway]);
+
     return (
         <div>
             <form onSubmit={(e) => handleSubmit(e)}>
@@ -33,4 +44,8 @@ const CommentBox = ({ saveComment, fetchComments }) => {
     );
 };
 
-export default connect(null, actions)(CommentBox);
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+});
+
+export default connect(mapStateToProps, actions)(CommentBox);

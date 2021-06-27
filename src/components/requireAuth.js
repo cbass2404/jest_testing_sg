@@ -1,21 +1,3 @@
-# Higher Order Components
-
--   A normal react component specifically made to help us reuse code inside an application
--   If there is a lot of duplicate code inside multiple components it is a perfect use for a higher order component
-
-_component + HOC = enhanced/composed component with additional functionality or data_
-
--   Example of HOC:
-    -   connect function in redux
-
-## Creating HOCs
-
--   write the logic you want to reuse into a component
--   create a HOC file and add the HOC scaffold
--   Move the reusable logic into the HOC
--   Pass props/config/behavior through to the child component
-
-```javascript
 import { Component } from 'react';
 
 // redux
@@ -50,4 +32,3 @@ const requireAuth = (ChildComponent) => {
 };
 
 export default requireAuth;
-```
